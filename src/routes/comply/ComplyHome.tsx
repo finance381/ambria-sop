@@ -80,7 +80,7 @@ export default function ComplyHome() {
     setSubmitting(true)
 
     try {
-      const built = []
+      const built: { item_index: number; value: string; photo_path?: string }[] = []
       for (const [idxStr, resp] of Object.entries(responses)) {
         const idx = parseInt(idxStr)
         let photo_path: string | undefined
