@@ -36,6 +36,7 @@ export default function App() {
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/staff" element={<StaffManager />} />
         <Route path="/admin/checklists" element={<ChecklistBuilder />} />
+        <Route path="/admin/reports" element={<div className="p-8 text-center text-gray-400 text-lg">📈 Reports — Coming Soon</div>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
