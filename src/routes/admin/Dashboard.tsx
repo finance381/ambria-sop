@@ -93,6 +93,8 @@ export default function Dashboard() {
             <h1 className="text-xl font-bold text-gray-900">{t('admin.dashboard')}</h1>
           </div>
           <div className="flex gap-2">
+            <button onClick={() => navigate('/')}
+              className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-gray-500">←</button>
             <button onClick={() => navigate('/admin/staff')}
               className="w-10 h-10 rounded-full bg-admin-light flex items-center justify-center text-sm">👥</button>
             <button onClick={toggleLang}
