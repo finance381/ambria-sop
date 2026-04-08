@@ -92,6 +92,7 @@ export default function Dashboard() {
           <button onClick={toggleLang} className="text-ambria-300 text-sm border border-ambria-600 rounded-lg px-2 py-1">
             {lang === 'hi' ? 'EN' : 'हिं'}
           </button>
+          <button onClick={() => navigate('/admin/staff')} className="text-ambria-300 text-sm border border-ambria-600 rounded-lg px-2 py-1">👥</button>
           <button onClick={handleLogout} className="text-ambria-400 text-sm">{t('admin.logout')}</button>
         </div>
       </header>

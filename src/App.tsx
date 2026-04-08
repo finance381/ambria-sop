@@ -8,6 +8,7 @@ import KioskSopViewer from './routes/kiosk/KioskSopViewer'
 import ComplyHome from './routes/comply/ComplyHome'
 import AdminLogin from './routes/admin/AdminLogin'
 import Dashboard from './routes/admin/Dashboard'
+import StaffManager from './routes/admin/StaffManager'
 
 function OfflineBanner() {
   const isOnline = useStore(s => s.isOnline)
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="/comply" element={<ComplyHome />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/staff" element={<StaffManager />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
