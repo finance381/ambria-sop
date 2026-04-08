@@ -24,7 +24,7 @@ export default function App() {
     <>
       <OfflineBanner />
       <Routes>
-        <Route path="/" element={<Navigate to="/kiosk" replace />} />
+        <Route path="/" element={<Home />} />
         <Route path="/kiosk" element={<KioskPinLock />} />
         <Route path="/kiosk/home" element={<KioskHome />} />
         <Route path="/kiosk/category/:categoryId" element={<KioskSopList />} />
@@ -32,7 +32,7 @@ export default function App() {
         <Route path="/comply" element={<ComplyHome />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/" element={<Home />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   )
