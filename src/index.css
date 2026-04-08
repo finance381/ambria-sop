@@ -1,30 +1,61 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ambria-900: #1e3a5f;
-  --color-ambria-800: #2a4a73;
-  --color-ambria-700: #365a87;
-  --color-ambria-600: #436b9b;
-  --color-ambria-500: #5080b3;
-  --color-ambria-400: #7aa0c9;
-  --color-ambria-300: #a3bfdd;
-  --color-ambria-200: #ccdaeb;
-  --color-ambria-100: #e6edf5;
-  --color-ambria-50: #f3f6fa;
-  --color-warm-50: #faf8f5;
-  --color-warm-100: #f5f0e8;
-  --color-warm-200: #e8dfd0;
-  --color-warm-300: #d4c5aa;
+  --color-ambria-900: #1a2e44;
+  --color-ambria-800: #243b56;
+  --color-ambria-700: #2f4a6a;
+  --color-ambria-600: #3b5d85;
+  --color-ambria-500: #4a7ab5;
+  --color-ambria-400: #6b9fd4;
+  --color-ambria-300: #a3c4e6;
+  --color-ambria-200: #d1e0f0;
+  --color-ambria-100: #e8f0f8;
+  --color-ambria-50: #f4f8fc;
+
+  --color-warm-50: #fafaf8;
+  --color-warm-100: #f5f3ef;
+  --color-warm-200: #eae6de;
+  --color-warm-300: #c8c1b4;
+
+  --color-kiosk: #e67e22;
+  --color-kiosk-light: #fef5ec;
+  --color-comply: #27ae60;
+  --color-comply-light: #eafaf1;
+  --color-admin: #5b6abf;
+  --color-admin-light: #eff0fa;
+
   --font-sans: 'Noto Sans Devanagari', 'Noto Sans', system-ui, sans-serif;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.1);
 }
 
 @layer base {
   body {
-    @apply bg-warm-50 text-gray-900 antialiased;
+    @apply bg-warm-50 text-gray-800 antialiased;
     -webkit-tap-highlight-color: transparent;
   }
   button, a, [role="button"] {
     min-height: 44px;
     min-width: 44px;
+  }
+}
+
+@layer utilities {
+  .card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+  }
+  .card-hover {
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .card-hover:active {
+    transform: scale(0.98);
+    box-shadow: var(--shadow-card);
+  }
+  @media (hover: hover) {
+    .card-hover:hover {
+      box-shadow: var(--shadow-card-hover);
+    }
   }
 }

@@ -5,13 +5,16 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { SopCategory } from '../../lib/types'
 
+const categoryColors = ['bg-orange-50', 'bg-blue-50', 'bg-green-50', 'bg-purple-50', 'bg-pink-50', 'bg-amber-50']
+const categoryAccents = ['text-orange-600', 'text-blue-600', 'text-green-600', 'text-purple-600', 'text-pink-600', 'text-amber-600']
+
 export default function KioskHome() {
   const navigate = useNavigate()
   const { station, staff, toggleLang, lang, isOnline, setStation, setStaff } = useStore()
   const [categories, setCategories] = useState<SopCategory[]>([])
 
   useEffect(() => {
-    if (!station) { navigate('/kiosk'); return }
+    if (!station) { navigate('/'); return }
     supabase
       .from('sop_categories')
       .select('*')
@@ -22,10 +25,14 @@ export default function KioskHome() {
   function handleLogout() {
     setStation(null)
     setStaff(null)
-    navigate('/kiosk')
+    navigate('/')
   }
 
   if (!station) return null
+
+  const greeting = lang === 'hi'
+    ? `${staff?.name_hi || staff?.name || ''}, क्या बनाना है?`
+    : `${staff?.name || ''}, what's cooking?`
 
   const folders = [
     { id: 'today', name_hi: 'आज का मेन्यू', name_en: "Today's Menu", icon: '🍲' },
@@ -38,47 +45,56 @@ export default function KioskHome() {
   ]
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col">
-      <header className="bg-ambria-900 text-white px-6 py-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold tracking-wide">AMBRIA</h1>
-          <p className="text-ambria-300 text-sm">
-            {localized(station.department?.name_hi, station.department?.name || station.name)}
-            {staff && <span className="ml-2">• {staff.name_hi || staff.name}</span>}
-          </p>
+    <div className="min-h-screen bg-warm-50">
+      {/* Header */}
+      <div className="bg-white px-6 pt-6 pb-5" style={{ boxShadow: '0 1px 0 rgba(0,0,0,0.06)' }}>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-gray-400 text-sm">
+              {localized(station.department?.name_hi, station.department?.name || station.name)}
+            </p>
+            <h1 className="text-xl font-bold text-gray-900 mt-0.5">{greeting}</h1>
+          </div>
+          <div className="flex gap-2">
+            {!isOnline && (
+              <span className="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-full font-medium">ऑफलाइन</span>
+            )}
+            <button onClick={toggleLang}
+              className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-sm text-gray-500 font-medium">
+              {lang === 'hi' ? 'EN' : 'हिं'}
+            </button>
+            <button onClick={handleLogout}
+              className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-sm">
+              🔒
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          {!isOnline && (
-            <span className="bg-amber-500 text-xs px-2 py-1 rounded-full font-medium">ऑफलाइन</span>
-          )}
-          <button onClick={toggleLang} className="text-ambria-300 text-sm border border-ambria-600 rounded-lg px-3 py-1">
-            {lang === 'hi' ? 'EN' : 'हिं'}
-          </button>
-          <button onClick={handleLogout} className="text-ambria-400 text-sm">🔒</button>
-        </div>
-      </header>
+      </div>
 
-      <main className="flex-1 p-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
-          {folders.map(f => (
+      {/* Category Grid */}
+      <div className="p-5">
+        <p className="text-sm text-gray-400 font-medium mb-3 px-1">
+          {lang === 'hi' ? 'कैटेगरी चुनें' : 'Choose a category'}
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {folders.map((f, idx) => (
             <button
               key={f.id}
               onClick={() => navigate(`/kiosk/category/${f.id}`)}
-              className="bg-white rounded-2xl p-6 shadow-sm border border-warm-200
-                flex flex-col items-center gap-3 active:scale-95 transition-transform hover:shadow-md"
+              className="card card-hover p-5 flex flex-col items-center gap-3"
             >
-              <span className="text-4xl">{f.icon}</span>
-              <span className="text-base font-semibold text-gray-800 text-center leading-tight">
+              <div className={`w-16 h-16 rounded-2xl ${categoryColors[idx % categoryColors.length]}
+                flex items-center justify-center text-3xl`}>
+                {f.icon}
+              </div>
+              <span className={`text-sm font-semibold text-center leading-tight
+                ${categoryAccents[idx % categoryAccents.length]}`}>
                 {lang === 'hi' ? f.name_hi : f.name_en}
               </span>
             </button>
           ))}
         </div>
-      </main>
-
-      <footer className="text-center py-3 text-warm-300 text-xs">
-        Ambria Kitchen SOP System
-      </footer>
+      </div>
     </div>
   )
 }
