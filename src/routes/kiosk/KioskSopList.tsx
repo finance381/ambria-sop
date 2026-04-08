@@ -15,7 +15,7 @@ export default function KioskSopList() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!station) { navigate('/kiosk'); return }
+    if (!station) { navigate('/'); return }
     loadSops()
   }, [categoryId, station])
 
@@ -59,53 +59,77 @@ export default function KioskSopList() {
   })
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col">
-      <header className="bg-ambria-900 text-white px-4 py-3 flex items-center gap-3">
-        <button onClick={() => navigate('/kiosk/home')} className="text-ambria-300 text-2xl leading-none">←</button>
-        <div className="flex-1">
-          <h1 className="text-lg font-bold">{title}</h1>
-          <p className="text-ambria-300 text-xs">{filtered.length} SOPs</p>
+    <div className="min-h-screen bg-warm-50">
+      {/* Header */}
+      <div className="bg-white px-5 pt-5 pb-4" style={{ boxShadow: '0 1px 0 rgba(0,0,0,0.06)' }}>
+        <div className="flex items-center gap-3 mb-4">
+          <button onClick={() => navigate('/kiosk/home')}
+            className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-gray-500">
+            ←
+          </button>
+          <div>
+            <h1 className="text-lg font-bold text-gray-900">{title}</h1>
+            <p className="text-xs text-gray-400">{filtered.length} SOPs</p>
+          </div>
         </div>
-      </header>
 
-      <div className="px-4 py-3">
-        <input
-          type="text"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder={t('common.search') + '...'}
-          className="w-full bg-white border border-warm-200 rounded-xl px-4 py-3 text-base outline-none focus:border-ambria-400"
-        />
+        {/* Search */}
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-sm">🔍</span>
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder={t('common.search') + '...'}
+            className="w-full bg-warm-50 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ambria-200"
+          />
+        </div>
       </div>
 
-      <main className="flex-1 px-4 pb-6">
+      {/* List */}
+      <div className="p-4 space-y-2">
         {loading ? (
-          <p className="text-center text-warm-300 py-12">{t('common.loading')}</p>
+          <p className="text-center text-gray-400 py-16">{t('common.loading')}</p>
         ) : filtered.length === 0 ? (
-          <p className="text-center text-warm-300 py-12">{t('kiosk.no_sops')}</p>
-        ) : (
-          <div className="space-y-2">
-            {filtered.map(sop => (
-              <button
-                key={sop.id}
-                onClick={() => navigate(`/kiosk/sop/${sop.id}`)}
-                className="w-full bg-white rounded-xl p-4 border border-warm-200 flex items-center gap-4 text-left active:bg-warm-100"
-                >
-                <div className="w-10 h-10 bg-ambria-100 rounded-lg flex items-center justify-center text-lg flex-shrink-0">📄</div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-800 truncate">
-                    {localized(sop.title_hi, sop.title)}
-                  </p>
-                  <div className="flex gap-3 mt-1 text-xs text-warm-300">
-                    {sop.pax_count && <span>{sop.pax_count} {t('kiosk.pax')}</span>}
-                    {sop.prep_time_minutes && <span>{sop.prep_time_minutes} {t('kiosk.min')}</span>}
-                  </div>
-                </div>
-              </button>
-            ))}
+          <div className="text-center py-16">
+            <p className="text-4xl mb-3">📭</p>
+            <p className="text-gray-400">{t('kiosk.no_sops')}</p>
           </div>
+        ) : (
+          filtered.map(sop => (
+            <button
+              key={sop.id}
+              onClick={() => navigate(`/kiosk/sop/${sop.id}`)}
+              className="w-full card card-hover p-4 flex items-center gap-4 text-left"
+            >
+              <div className="w-12 h-12 rounded-xl bg-kiosk-light flex items-center justify-center text-xl flex-shrink-0">
+                📄
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-900 truncate">
+                  {localized(sop.title_hi, sop.title)}
+                </p>
+                {sop.title_hi && lang === 'hi' && sop.title && (
+                  <p className="text-xs text-gray-400 truncate mt-0.5">{sop.title}</p>
+                )}
+                <div className="flex gap-3 mt-1.5">
+                  {sop.pax_count && (
+                    <span className="text-xs bg-warm-100 text-gray-500 px-2 py-0.5 rounded-full">
+                      {sop.pax_count} {t('kiosk.pax')}
+                    </span>
+                  )}
+                  {sop.prep_time_minutes && (
+                    <span className="text-xs bg-warm-100 text-gray-500 px-2 py-0.5 rounded-full">
+                      ⏱ {sop.prep_time_minutes} {t('kiosk.min')}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <span className="text-gray-300 text-xl">›</span>
+            </button>
+          ))
         )}
-      </main>
+      </div>
     </div>
   )
 }
