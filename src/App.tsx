@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useStore } from './store/useStore'
+import Home from './routes/Home'
 import KioskPinLock from './routes/kiosk/KioskPinLock'
 import KioskHome from './routes/kiosk/KioskHome'
 import KioskSopList from './routes/kiosk/KioskSopList'
@@ -31,7 +32,7 @@ export default function App() {
         <Route path="/comply" element={<ComplyHome />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<Navigate to="/kiosk" replace />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </>
   )
