@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { Station, StaffMember } from '../lib/types'
 import { getLang, setLang as setLangFn } from '../lib/i18n'
 
@@ -14,21 +15,33 @@ interface AppState {
   isOnline: boolean
 }
 
-export const useStore = create<AppState>((set, get) => ({
-  station: null,
-  setStation: (station) => set({ station }),
-  staff: null,
-  setStaff: (staff) => set({ staff }),
-  isAdmin: false,
-  setIsAdmin: (isAdmin) => set({ isAdmin }),
-  lang: getLang(),
-  toggleLang: () => {
-    const next = get().lang === 'hi' ? 'en' : 'hi'
-    setLangFn(next)
-    set({ lang: next })
-  },
-  isOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
-}))
+export const useStore = create<AppState>()(
+  persist(
+    (set, get) => ({
+      station: null,
+      setStation: (station) => set({ station }),
+      staff: null,
+      setStaff: (staff) => set({ staff }),
+      isAdmin: false,
+      setIsAdmin: (isAdmin) => set({ isAdmin }),
+      lang: getLang(),
+      toggleLang: () => {
+        const next = get().lang === 'hi' ? 'en' : 'hi'
+        setLangFn(next)
+        set({ lang: next })
+      },
+      isOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
+    }),
+    {
+      name: 'ambria-session',
+      partialize: (state) => ({
+        station: state.station,
+        staff: state.staff,
+        lang: state.lang,
+      }),
+    }
+  )
+)
 
 if (typeof window !== 'undefined') {
   window.addEventListener('online', () => useStore.setState({ isOnline: true }))
