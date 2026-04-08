@@ -10,6 +10,8 @@ type Step = 'pin' | 'name' | 'home' | 'checklist' | 'success'
 export default function ComplyHome() {
   const { lang, toggleLang, isOnline } = useStore()
 
+  const globalStaff = useStore(s => s.staff)
+  const globalStation = useStore(s => s.station)
   const [step, setStep] = useState<Step>('pin')
   const [pin, setPin] = useState('')
   const [pinError, setPinError] = useState('')
@@ -25,6 +27,14 @@ export default function ComplyHome() {
   const [todaySubmissions, setTodaySubmissions] = useState<string[]>([])
 
   useEffect(() => {
+    // If already logged in via Home, skip PIN
+    if (globalStaff && globalStation) {
+      setStation(globalStation)
+      setStaff(globalStaff)
+      loadChecklists(globalStaff)
+      setStep('home')
+      return
+    }
     supabase.from('stations').select('*, department:departments(*)')
       .eq('is_active', true)
       .then(({ data }) => setStations(data || []))

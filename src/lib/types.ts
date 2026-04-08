@@ -25,7 +25,9 @@ export interface StaffMember {
   name_hi?: string
   role: UserRole
   department_id: string
+  pin?: string
   is_active: boolean
+  department?: Department
 }
 
 export interface SopCategory {
