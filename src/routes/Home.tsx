@@ -37,7 +37,7 @@ const allCards = [
     title_en: 'Admin Dashboard',
     desc_hi: 'कम्प्लायंस रिव्यू और प्रबंधन',
     desc_en: 'Review compliance & manage',
-    route: '/admin',
+    route: '/admin/dashboard',
     accent: 'bg-admin',
     accentLight: 'bg-admin-light',
     roles: ['admin', 'head_chef'],

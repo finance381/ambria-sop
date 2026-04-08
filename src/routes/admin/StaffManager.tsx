@@ -15,11 +15,14 @@ export default function StaffManager() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
+  const staff = useStore(s => s.staff)
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) { navigate('/admin'); return }
-      loadData()
-    })
+    if (!staff || (staff.role !== 'admin' && staff.role !== 'head_chef')) {
+      navigate('/', { replace: true })
+      return
+    }
+    loadData()
   }, [])
 
   async function loadData() {

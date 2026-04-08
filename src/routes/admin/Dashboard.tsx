@@ -7,7 +7,7 @@ import type { Station, Checklist, Submission } from '../../lib/types'
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const { setIsAdmin, lang, toggleLang } = useStore()
+  const { lang, toggleLang } = useStore()
 
   const [stations, setStations] = useState<Station[]>([])
   const [checklists, setChecklists] = useState<Checklist[]>([])
@@ -16,11 +16,14 @@ export default function Dashboard() {
   const [selectedSub, setSelectedSub] = useState<Submission | null>(null)
   const [tab, setTab] = useState<'overview' | 'grid' | 'review'>('overview')
 
+  const staff = useStore(s => s.staff)
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) { navigate('/admin'); return }
-      loadData()
-    })
+    if (!staff || (staff.role !== 'admin' && staff.role !== 'head_chef')) {
+      navigate('/', { replace: true })
+      return
+    }
+    loadData()
   }, [])
 
   async function loadData() {
@@ -47,10 +50,8 @@ export default function Dashboard() {
     loadData()
   }
 
-  async function handleLogout() {
-    await supabase.auth.signOut()
-    setIsAdmin(false)
-    navigate('/admin')
+  function handleLogout() {
+    navigate('/')
   }
 
   const totalExpected = stations.length * checklists.length
