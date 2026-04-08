@@ -5,6 +5,8 @@ import KioskHome from './routes/kiosk/KioskHome'
 import KioskSopList from './routes/kiosk/KioskSopList'
 import KioskSopViewer from './routes/kiosk/KioskSopViewer'
 import ComplyHome from './routes/comply/ComplyHome'
+import AdminLogin from './routes/admin/AdminLogin'
+import Dashboard from './routes/admin/Dashboard'
 
 function OfflineBanner() {
   const isOnline = useStore(s => s.isOnline)
@@ -27,6 +29,8 @@ export default function App() {
         <Route path="/kiosk/category/:categoryId" element={<KioskSopList />} />
         <Route path="/kiosk/sop/:sopId" element={<KioskSopViewer />} />
         <Route path="/comply" element={<ComplyHome />} />
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/kiosk" replace />} />
       </Routes>
     </>
