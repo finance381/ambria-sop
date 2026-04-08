@@ -23,6 +23,7 @@ export default function SopManager() {
   const [filterDept, setFilterDept] = useState('')
 
   useEffect(() => {
+    console.log('SopManager staff:', staff?.name, staff?.role)
     if (!staff || (staff.role !== 'admin' && staff.role !== 'head_chef')) {
       navigate('/', { replace: true })
       return
