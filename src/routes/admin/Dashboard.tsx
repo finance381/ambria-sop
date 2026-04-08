@@ -4,10 +4,11 @@ import { supabase } from '../../lib/supabase'
 import { useStore } from '../../store/useStore'
 import { t, localized } from '../../lib/i18n'
 import type { Station, Checklist, Submission } from '../../lib/types'
+import AdminLayout from './AdminLayout'
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const { lang, toggleLang } = useStore()
+  const { lang } = useStore()
 
   const [stations, setStations] = useState<Station[]>([])
   const [checklists, setChecklists] = useState<Checklist[]>([])
@@ -50,9 +51,6 @@ export default function Dashboard() {
     loadData()
   }
 
-  function handleLogout() {
-    navigate('/')
-  }
 
   const totalExpected = stations.length * checklists.length
   const totalSubmitted = submissions.length
@@ -84,29 +82,12 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-warm-50">
-      {/* Header */}
-      <div className="bg-white px-5 pt-5 pb-4" style={{ boxShadow: '0 1px 0 rgba(0,0,0,0.06)' }}>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-gray-400 text-sm">{lang === 'hi' ? 'आज का' : "Today's"}</p>
-            <h1 className="text-xl font-bold text-gray-900">{t('admin.dashboard')}</h1>
-          </div>
-          <div className="flex gap-2">
-            <button onClick={() => navigate('/')}
-              className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-gray-500">←</button>
-            <button onClick={() => navigate('/admin/checklists')}
-              className="w-10 h-10 rounded-full bg-admin-light flex items-center justify-center text-sm">📋</button>
-            <button onClick={() => navigate('/admin/staff')}
-              className="w-10 h-10 rounded-full bg-admin-light flex items-center justify-center text-sm">👥</button>
-            <button onClick={toggleLang}
-              className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-sm text-gray-500 font-medium">
-              {lang === 'hi' ? 'EN' : 'हिं'}
-            </button>
-            <button onClick={handleLogout}
-              className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-sm text-gray-500">⏻</button>
-          </div>
-        </div>
+    <AdminLayout>
+    <div className="bg-warm-50">
+      {/* Page title — visible inside sidebar layout */}
+      <div className="px-5 pt-5 pb-2 hidden lg:block">
+        <p className="text-gray-400 text-sm">{lang === 'hi' ? 'आज का' : "Today's"}</p>
+        <h1 className="text-xl font-bold text-gray-900">{t('admin.dashboard')}</h1>
       </div>
 
       {/* Stats */}
@@ -353,5 +334,6 @@ export default function Dashboard() {
         </div>
       )}
     </div>
+    </AdminLayout>
   )
 }

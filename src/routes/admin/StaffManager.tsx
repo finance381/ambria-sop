@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabase'
 import { useStore } from '../../store/useStore'
 import { t, localized } from '../../lib/i18n'
 import type { StaffMember, Department } from '../../lib/types'
+import AdminLayout from './AdminLayout'
 
 export default function StaffManager() {
   const navigate = useNavigate()
@@ -111,20 +112,17 @@ export default function StaffManager() {
   const activeCount = staffList.filter(s => s.is_active).length
 
   return (
-    <div className="min-h-screen bg-warm-50">
-      <div className="bg-white px-5 pt-5 pb-4" style={{ boxShadow: '0 1px 0 rgba(0,0,0,0.06)' }}>
-        <div className="flex items-center gap-3">
-          <button onClick={() => navigate('/admin/dashboard')}
-            className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-gray-500">←</button>
-          <div className="flex-1">
-            <h1 className="text-lg font-bold text-gray-900">{lang === 'hi' ? 'स्टाफ प्रबंधन' : 'Staff Management'}</h1>
-            <p className="text-xs text-gray-400">{activeCount} {lang === 'hi' ? 'सक्रिय' : 'active'} / {staffList.length} {lang === 'hi' ? 'कुल' : 'total'}</p>
-          </div>
-          <button onClick={startNew}
-            className="bg-admin text-white text-sm rounded-xl px-4 py-2 font-medium active:scale-[0.98]">
-            + {lang === 'hi' ? 'नया' : 'New'}
-          </button>
+    <AdminLayout>
+    <div className="bg-warm-50 min-h-screen">
+      <div className="px-5 pt-5 pb-3 flex items-center justify-between">
+        <div>
+          <h1 className="text-lg font-bold text-gray-900">{lang === 'hi' ? 'स्टाफ प्रबंधन' : 'Staff Management'}</h1>
+          <p className="text-xs text-gray-400">{activeCount} {lang === 'hi' ? 'सक्रिय' : 'active'} / {staffList.length} {lang === 'hi' ? 'कुल' : 'total'}</p>
         </div>
+        <button onClick={startNew}
+          className="bg-admin text-white text-sm rounded-xl px-4 py-2 font-medium active:scale-[0.98]">
+          + {lang === 'hi' ? 'नया' : 'New'}
+        </button>
       </div>
 
       <div className="p-4 space-y-2">
@@ -240,5 +238,6 @@ export default function StaffManager() {
         </div>
       )}
     </div>
+    </AdminLayout>
   )
 }
