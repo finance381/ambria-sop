@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ambria-900: #1e3a5f;
+  --color-ambria-800: #2a4a73;
+  --color-ambria-700: #365a87;
+  --color-ambria-600: #436b9b;
+  --color-ambria-500: #5080b3;
+  --color-ambria-400: #7aa0c9;
+  --color-ambria-300: #a3bfdd;
+  --color-ambria-200: #ccdaeb;
+  --color-ambria-100: #e6edf5;
+  --color-ambria-50: #f3f6fa;
+  --color-warm-50: #faf8f5;
+  --color-warm-100: #f5f0e8;
+  --color-warm-200: #e8dfd0;
+  --color-warm-300: #d4c5aa;
+  --font-sans: 'Noto Sans Devanagari', 'Noto Sans', system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-warm-50 text-gray-900 antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
