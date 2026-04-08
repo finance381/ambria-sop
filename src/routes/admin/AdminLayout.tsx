@@ -6,6 +6,7 @@ const navItems = [
   { path: '/admin/dashboard', icon: '📊', label_hi: 'डैशबोर्ड', label_en: 'Dashboard' },
   { path: '/admin/checklists', icon: '📋', label_hi: 'चेकलिस्ट', label_en: 'Checklists' },
   { path: '/admin/staff', icon: '👥', label_hi: 'स्टाफ', label_en: 'Staff' },
+  { path: '/admin/sops', icon: '📄', label_hi: 'SOP प्रबंधन', label_en: 'SOPs' },
   { path: '/admin/reports', icon: '📈', label_hi: 'रिपोर्ट्स', label_en: 'Reports' },
 ]
 

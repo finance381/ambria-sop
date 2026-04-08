@@ -10,6 +10,7 @@ import AdminLogin from './routes/admin/AdminLogin'
 import Dashboard from './routes/admin/Dashboard'
 import StaffManager from './routes/admin/StaffManager'
 import ChecklistBuilder from './routes/admin/ChecklistBuilder'
+import SopManager from './routes/admin/SopManager'
 
 function OfflineBanner() {
   const isOnline = useStore(s => s.isOnline)
