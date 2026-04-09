@@ -11,6 +11,7 @@ import Dashboard from './routes/admin/Dashboard'
 import StaffManager from './routes/admin/StaffManager'
 import ChecklistBuilder from './routes/admin/ChecklistBuilder'
 import SopManager from './routes/admin/SopManager'
+import Reports from './routes/admin/Reports'
 import EventManager from './routes/admin/EventManager'
 
 function OfflineBanner() {
@@ -40,7 +41,7 @@ export default function App() {
         <Route path="/admin/checklists" element={<ChecklistBuilder />} />
         <Route path="/admin/events" element={<EventManager />} />
         <Route path="/admin/sops" element={<SopManager />} />
-        <Route path="/admin/reports" element={<div className="p-8 text-center text-gray-400 text-lg">📈 Reports — Coming Soon</div>} />
+        <Route path="/admin/reports" element={<Reports />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
