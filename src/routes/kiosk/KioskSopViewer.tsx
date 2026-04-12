@@ -402,6 +402,73 @@ export default function KioskSopViewer() {
               )
             })}
           </div>
+          {/* Pre-prep section */}
+          {(sop as any).pre_prep?.length > 0 && (
+            <div className="px-4 pb-3">
+              <div className="card p-4">
+                <p className="text-xs text-gray-400 font-medium mb-2">
+                  {lang === 'hi' ? '📋 प्री-प्रेपरेशन' : '📋 Pre-preparation'}
+                </p>
+                <div className="space-y-2">
+                  {((sop as any).pre_prep as any[]).map((p: any, i: number) => (
+                    <div key={i} className="flex items-center justify-between text-sm">
+                      <span className="text-gray-700">{lang === 'hi' ? p.task : p.task_en}</span>
+                      <span className="text-xs bg-warm-100 text-gray-500 px-2 py-0.5 rounded-full flex-shrink-0 ml-2">{p.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Storage info */}
+          {(sop as any).storage_info?.length > 0 && (
+            <div className="px-4 pb-3">
+              <div className="card p-4">
+                <p className="text-xs text-gray-400 font-medium mb-2">
+                  {lang === 'hi' ? '🧊 स्टोरेज' : '🧊 Storage'}
+                </p>
+                <div className="space-y-2">
+                  {((sop as any).storage_info as any[]).map((s: any, i: number) => (
+                    <div key={i} className="flex items-start justify-between text-sm gap-2">
+                      <div className="flex-1">
+                        <p className="text-gray-700">{lang === 'hi' ? s.item : s.item_en}</p>
+                        <p className="text-xs text-gray-400">{lang === 'hi' ? s.condition : s.condition_en}</p>
+                      </div>
+                      <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full flex-shrink-0">{s.duration}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Chef tips */}
+          {(sop as any).chef_tips?.length > 0 && (
+            <div className="px-4 pb-3">
+              <div className="card p-4">
+                <p className="text-xs text-gray-400 font-medium mb-2">
+                  {lang === 'hi' ? '👨‍🍳 शेफ टिप्स' : '👨‍🍳 Chef Tips'}
+                </p>
+                <div className="space-y-2">
+                  {((sop as any).chef_tips as any[]).map((c: any, i: number) => (
+                    <p key={i} className="text-sm text-gray-700">
+                      ⚠ {lang === 'hi' ? c.tip : c.tip_en}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Yield info */}
+          {(sop as any).yield_info && (
+            <div className="px-4 pb-3">
+              <div className="bg-kiosk-light rounded-xl p-3 text-center">
+                <p className="text-sm text-kiosk font-medium">🍽 {(sop as any).yield_info}</p>
+              </div>
+            </div>
+          )}
 
           {/* Active timers floating summary */}
           {activeTimerCount > 0 && (
