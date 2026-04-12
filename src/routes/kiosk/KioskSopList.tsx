@@ -13,6 +13,8 @@ export default function KioskSopList() {
   const [search, setSearch] = useState('')
   const [title, setTitle] = useState('')
   const [loading, setLoading] = useState(true)
+  const [filterDept, setFilterDept] = useState('')
+  const [departments, setDepartments] = useState<{id: string, name: string, name_hi: string}[]>([])
 
   useEffect(() => {
     if (!station) { navigate('/'); return }
@@ -78,7 +80,6 @@ export default function KioskSopList() {
         .eq('is_active', true)
         .order('title')
 
-      // Non-admin: filter by department
       const staffRole = useStore.getState().staff?.role
       if (staffRole !== 'admin' && staffRole !== 'head_chef') {
         query = query.eq('department_id', station.department_id)
@@ -86,11 +87,18 @@ export default function KioskSopList() {
 
       const { data } = await query
       setSops(data || [])
+
+      // Load departments for filter (admin/head_chef only)
+      if (staffRole === 'admin' || staffRole === 'head_chef') {
+        const { data: depts } = await supabase.from('departments').select('id, name, name_hi').order('name')
+        setDepartments(depts || [])
+      }
     }
     setLoading(false)
   }
 
   const filtered = sops.filter(s => {
+    if (filterDept && s.department_id !== filterDept) return false
     if (!search) return true
     const q = search.toLowerCase()
     return s.title.toLowerCase().includes(q) || (s.title_hi && s.title_hi.includes(q))
@@ -122,6 +130,27 @@ export default function KioskSopList() {
             className="w-full bg-warm-50 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ambria-200"
           />
         </div>
+
+        {/* Department filter chips */}
+        {departments.length > 0 && (
+          <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+            <button
+              onClick={() => setFilterDept('')}
+              className={`flex-shrink-0 text-sm px-4 py-2 rounded-full font-medium transition-colors
+                ${!filterDept ? 'bg-kiosk text-white' : 'bg-warm-50 text-gray-500'}`}>
+              {lang === 'hi' ? 'सभी' : 'All'}
+            </button>
+            {departments.map(d => (
+              <button
+                key={d.id}
+                onClick={() => setFilterDept(filterDept === d.id ? '' : d.id)}
+                className={`flex-shrink-0 text-sm px-4 py-2 rounded-full font-medium transition-colors whitespace-nowrap
+                  ${filterDept === d.id ? 'bg-kiosk text-white' : 'bg-warm-50 text-gray-500'}`}>
+                {localized(d.name_hi, d.name)}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* List */}
