@@ -52,7 +52,7 @@ export default function Dashboard() {
   }
 
 
-  const totalExpected = stations.length * checklists.length
+  const totalExpected = stations.reduce((sum, st) => sum + checklists.filter(cl => cl.department_id === st.department_id).length, 0)
   const totalSubmitted = submissions.length
   const totalApproved = submissions.filter(s => s.status === 'approved').length
   const totalPending = submissions.filter(s => s.status === 'pending').length
@@ -178,7 +178,7 @@ export default function Dashboard() {
         <div className="p-4 space-y-2">
           {stations.map(st => {
             const stSubs = submissions.filter(s => s.station_id === st.id)
-            const stExpected = checklists.length
+            const stExpected = checklists.filter(cl => cl.department_id === st.department_id).length
             const stDone = stSubs.length
             const pct = stExpected > 0 ? Math.round((stDone / stExpected) * 100) : 0
             return (
@@ -228,6 +228,8 @@ export default function Dashboard() {
                       {localized(st.department?.name_hi, st.name)}
                     </td>
                     {checklists.map(cl => {
+                      const applicable = cl.department_id === st.department_id
+                      if (!applicable) return <td key={cl.id} className="p-2 text-center"><span className="text-[10px] text-gray-300">—</span></td>
                       const status = getCellStatus(st.id, cl.id)
                       const sub = getCellSubmission(st.id, cl.id)
                       return (

@@ -74,7 +74,7 @@ export default function ComplyHome() {
     const { data: subs } = await supabase
       .from('submissions').select('checklist_id')
       .eq('station_id', st.id)
-      .eq('staff_name', member.name)
+      .eq('staff_id', member.id)
       .gte('submitted_at', today + 'T00:00:00')
     setTodaySubmissions((subs || []).map((s: any) => s.checklist_id))
   }
@@ -102,7 +102,8 @@ export default function ComplyHome() {
       await supabase.from('submissions').insert({
         checklist_id: activeChecklist.id,
         station_id: station.id,
-        staff_name: staff.name,
+        staff_name: staff.name_hi || staff.name,
+        staff_id: staff.id,
         status: 'pending',
         responses: built,
       })

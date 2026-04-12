@@ -77,6 +77,7 @@ export interface Submission {
   checklist_id: string
   station_id: string
   staff_name: string
+  staff_id?: string
   status: SubmissionStatus
   responses: { item_index: number; photo_path?: string; value?: string }[]
   submitted_at: string

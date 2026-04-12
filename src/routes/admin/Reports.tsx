@@ -111,7 +111,7 @@ export default function Reports() {
       }
     }
 
-    const expectedPerDay = sts.length * cls.length
+    const expectedPerDay = sts.reduce((sum, st) => sum + cls.filter(cl => cl.department_id === st.department_id).length, 0)
     const days: DayStat[] = Array.from(dayMap.entries()).map(([date, v]) => ({
       date,
       ...v,
@@ -124,7 +124,7 @@ export default function Reports() {
     const stStats: StationStat[] = sts.map(st => {
       const stSubs = subs.filter(s => s.station_id === st.id)
       const totalDays = dayMap.size
-      const expected = totalDays * cls.length
+      const expected = totalDays * cls.filter(cl => cl.department_id === st.department_id).length
       return {
         station: st,
         submitted: stSubs.length,
