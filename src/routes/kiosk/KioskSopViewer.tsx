@@ -245,33 +245,33 @@ export default function KioskSopViewer() {
       {tab === 'timer' && hasTimer && (
         <div className="flex-1 overflow-y-auto">
           {/* Header: Service time + Yield */}
-          <div className="text-center py-4 bg-warm-50 border-b border-warm-200">
+          <div className="text-center py-5 bg-warm-50 border-b border-warm-200">
             {serviceTime && (
               <>
-                <p className="text-xs text-gray-400">{lang === 'hi' ? 'सर्विस टाइम' : 'Service Time'}</p>
-                <p className="text-2xl font-bold text-gray-900">{serviceTime.slice(0, 5)}</p>
-                <p className="text-xs text-gray-400 mt-0.5">
+                <p className="text-sm text-gray-400">{lang === 'hi' ? 'सर्विस टाइम' : 'Service Time'}</p>
+                <p className="text-4xl font-bold text-gray-900 mt-1">{serviceTime.slice(0, 5)}</p>
+                <p className="text-base text-gray-400 mt-1">
                   {now.toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
                 </p>
               </>
             )}
             {(sop as any).yield_info && (
-              <p className="text-sm text-kiosk font-medium mt-2">🍽 {(sop as any).yield_info}</p>
+              <p className="text-lg text-kiosk font-bold mt-2">🍽 {(sop as any).yield_info}</p>
             )}
           </div>
 
           {/* Pre-prep */}
           {(sop as any).pre_prep?.length > 0 && (
-            <div className="px-4 pt-4 pb-1">
-              <div className="card p-4">
-                <p className="text-xs text-gray-400 font-medium mb-2">
+            <div className="px-4 pt-5 pb-2">
+              <div className="card p-5">
+                <p className="text-base text-gray-400 font-bold mb-3">
                   {lang === 'hi' ? '📋 प्री-प्रेपरेशन' : '📋 Pre-preparation'}
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {((sop as any).pre_prep as any[]).map((p: any, i: number) => (
-                    <div key={i} className="flex items-center justify-between text-sm">
-                      <span className="text-gray-700">{lang === 'hi' ? p.task : p.task_en}</span>
-                      <span className="text-xs bg-warm-100 text-gray-500 px-2 py-0.5 rounded-full flex-shrink-0 ml-2">{p.time}</span>
+                    <div key={i} className="flex items-center justify-between">
+                      <span className="text-lg text-gray-800 font-medium">{lang === 'hi' ? p.task : p.task_en}</span>
+                      <span className="text-base bg-kiosk-light text-kiosk px-3 py-1 rounded-full font-bold flex-shrink-0 ml-3">{p.time}</span>
                     </div>
                   ))}
                 </div>
@@ -280,14 +280,14 @@ export default function KioskSopViewer() {
           )}
 
           {/* Steps heading */}
-          <div className="px-4 pt-3 pb-1">
-            <p className="text-xs text-gray-400 font-medium">
+          <div className="px-5 pt-4 pb-2">
+            <p className="text-base text-gray-400 font-bold">
               {lang === 'hi' ? '⏱ प्रक्रिया स्टेप्स' : '⏱ Procedure Steps'}
             </p>
           </div>
 
           {/* Steps */}
-          <div className="p-4 pt-2 space-y-3">
+          <div className="px-4 pb-4 space-y-4">
             {steps.map((step, idx) => {
               const status = getStepStatus(step)
               const timer = timers[idx]
@@ -299,65 +299,63 @@ export default function KioskSopViewer() {
               return (
                 <div key={idx}
                   className={`rounded-2xl overflow-hidden transition-all ${statusBg[status]}
-                    ${timer?.running ? (isOvertime ? 'ring-2 ring-red-500' : 'ring-2 ring-green-500') : ''}
+                    ${timer?.running ? (isOvertime ? 'ring-3 ring-red-500' : 'ring-3 ring-green-500') : ''}
                     shadow-[var(--shadow-card)]`}>
 
-                  {/* Step header — always visible */}
-                  <div className="p-4 cursor-pointer" onClick={() => setExpandedStep(isExpanded ? null : idx)}>
-                    <div className="flex items-start gap-3">
-                      {/* Step number + status dot */}
-                      <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
-                          ${timer?.running
-                            ? (isOvertime ? 'bg-red-500 text-white animate-pulse' : 'bg-green-500 text-white')
-                            : timer && !timer.running && timer.elapsed > 0
-                              ? 'bg-green-500 text-white'
-                              : `${statusDot[status]} ${status === 'done' || status === 'now' ? 'text-white' : 'text-gray-500'}`
-                          }`}>
-                          {timer && !timer.running && timer.elapsed > 0 ? '✓' : idx + 1}
-                        </div>
+                  {/* Step header */}
+                  <div className="p-5 cursor-pointer" onClick={() => setExpandedStep(isExpanded ? null : idx)}>
+                    <div className="flex items-start gap-4">
+                      {/* Step number */}
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0
+                        ${timer?.running
+                          ? (isOvertime ? 'bg-red-500 text-white animate-pulse' : 'bg-green-500 text-white')
+                          : timer && !timer.running && timer.elapsed > 0
+                            ? 'bg-green-500 text-white'
+                            : `${statusDot[status]} ${status === 'done' || status === 'now' ? 'text-white' : 'text-gray-500'}`
+                        }`}>
+                        {timer && !timer.running && timer.elapsed > 0 ? '✓' : idx + 1}
                       </div>
 
                       {/* Main info */}
                       <div className="flex-1 min-w-0">
-                        <p className="font-bold text-gray-900">
+                        <p className="text-xl font-bold text-gray-900">
                           {lang === 'hi' ? step.label : (step.label_en || step.label)}
                         </p>
-                        <div className="flex flex-wrap gap-2 mt-1">
+                        <div className="flex flex-wrap gap-2 mt-2">
                           {serviceTime && (
-                            <span className="text-xs text-gray-400">
+                            <span className="text-base text-gray-400">
                               📍 {formatTime(step)}
                             </span>
                           )}
                           {step.duration_minutes && step.duration_minutes > 0 && (
-                            <span className="text-xs bg-warm-200 text-gray-600 px-2 py-0.5 rounded-full">
+                            <span className="text-base bg-warm-200 text-gray-700 px-3 py-1 rounded-full font-bold">
                               ⏱ {step.duration_minutes} {lang === 'hi' ? 'मिनट' : 'min'}
                             </span>
                           )}
                           {serviceTime && (
-                            <span className={`text-xs font-medium
+                            <span className={`text-base font-bold
                               ${status === 'now' ? 'text-red-600' : status === 'soon' ? 'text-amber-600' : 'text-gray-400'}`}>
                               {formatCountdown(step)}
                             </span>
                           )}
                         </div>
 
-                        {/* Ingredients preview (always visible) */}
+                        {/* Ingredients — always visible */}
                         {step.ingredients && (
-                          <p className="text-xs text-gray-500 mt-2 bg-warm-100 rounded-lg px-3 py-1.5">
+                          <p className="text-base text-gray-600 mt-3 bg-warm-100 rounded-xl px-4 py-2.5">
                             🧂 {lang === 'hi' ? step.ingredients : (step.ingredients_en || step.ingredients)}
                           </p>
                         )}
                       </div>
 
-                      {/* Timer display + expand arrow */}
+                      {/* Timer display */}
                       <div className="flex flex-col items-end gap-1 flex-shrink-0">
                         {timer?.running && (
                           <div className={`text-right ${isOvertime ? 'text-red-600' : 'text-green-600'}`}>
-                            <p className="text-2xl font-mono font-bold">
+                            <p className="text-3xl font-mono font-bold">
                               {isOvertime ? '+' : ''}{formatTimer(isOvertime ? overtimeSeconds : remaining)}
                             </p>
-                            <p className="text-[10px]">
+                            <p className="text-sm font-bold">
                               {isOvertime
                                 ? (lang === 'hi' ? 'ओवरटाइम!' : 'OVERTIME!')
                                 : (lang === 'hi' ? 'बाकी' : 'left')}
@@ -366,61 +364,59 @@ export default function KioskSopViewer() {
                         )}
                         {timer && !timer.running && timer.elapsed > 0 && (
                           <div className="text-right">
-                            <p className={`text-lg font-mono font-bold ${timer.elapsed > timer.duration ? 'text-red-500' : 'text-green-600'}`}>
+                            <p className={`text-2xl font-mono font-bold ${timer.elapsed > timer.duration ? 'text-red-500' : 'text-green-600'}`}>
                               {formatTimer(timer.elapsed)}
                             </p>
-                            <p className="text-[10px] text-gray-400">
+                            <p className="text-sm text-gray-400 font-medium">
                               {timer.elapsed > timer.duration
                                 ? `+${formatTimer(timer.elapsed - timer.duration)} ${lang === 'hi' ? 'ओवर' : 'over'}`
                                 : (lang === 'hi' ? 'पूरा' : 'done')}
                             </p>
                           </div>
                         )}
-                        <span className={`text-gray-300 transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▾</span>
+                        <span className={`text-gray-300 text-2xl transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▾</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Expanded details */}
                   {isExpanded && (
-                    <div className="px-4 pb-4 border-t border-warm-200 pt-3">
-                      {/* Full instructions */}
+                    <div className="px-5 pb-5 border-t border-warm-200 pt-4">
                       {step.details && (
-                        <div className="mb-3">
-                          <p className="text-xs text-gray-400 font-medium mb-1">
+                        <div className="mb-4">
+                          <p className="text-sm text-gray-400 font-bold mb-2">
                             {lang === 'hi' ? 'निर्देश' : 'Instructions'}
                           </p>
-                          <p className="text-sm text-gray-700 leading-relaxed">
+                          <p className="text-lg text-gray-800 leading-relaxed">
                             {lang === 'hi' ? step.details : (step.details_en || step.details)}
                           </p>
                         </div>
                       )}
 
-                      {/* Timer controls */}
                       {step.duration_minutes && step.duration_minutes > 0 && (
-                        <div className="flex gap-2 mt-3">
+                        <div className="flex gap-3 mt-4">
                           {!timer || (!timer.running && timer.elapsed === 0) ? (
                             <button
                               onClick={(e) => { e.stopPropagation(); startTimer(idx, step.duration_minutes!) }}
-                              className="flex-1 bg-green-500 text-white rounded-xl py-3 font-bold text-sm active:scale-[0.98]">
+                              className="flex-1 bg-green-500 text-white rounded-2xl py-4 text-lg font-bold active:scale-[0.98]">
                               ▶ {lang === 'hi' ? 'टाइमर शुरू' : 'Start Timer'} ({step.duration_minutes}m)
                             </button>
                           ) : timer.running ? (
                             <button
                               onClick={(e) => { e.stopPropagation(); stopTimer(idx) }}
-                              className={`flex-1 ${isOvertime ? 'bg-red-500' : 'bg-amber-500'} text-white rounded-xl py-3 font-bold text-sm active:scale-[0.98]`}>
+                              className={`flex-1 ${isOvertime ? 'bg-red-500' : 'bg-amber-500'} text-white rounded-2xl py-4 text-lg font-bold active:scale-[0.98]`}>
                               ⏹ {lang === 'hi' ? 'पूरा हुआ' : 'Done'}
                             </button>
                           ) : (
                             <>
                               <button
                                 onClick={(e) => { e.stopPropagation(); startTimer(idx, step.duration_minutes!) }}
-                                className="flex-1 bg-green-500 text-white rounded-xl py-3 font-bold text-sm active:scale-[0.98]">
+                                className="flex-1 bg-green-500 text-white rounded-2xl py-4 text-lg font-bold active:scale-[0.98]">
                                 ▶ {lang === 'hi' ? 'फिर से' : 'Restart'}
                               </button>
                               <button
                                 onClick={(e) => { e.stopPropagation(); resetTimer(idx) }}
-                                className="bg-warm-200 text-gray-500 rounded-xl px-4 py-3 text-sm active:scale-[0.98]">
+                                className="bg-warm-200 text-gray-500 rounded-2xl px-6 py-4 text-lg active:scale-[0.98]">
                                 ✕
                               </button>
                             </>
@@ -433,21 +429,22 @@ export default function KioskSopViewer() {
               )
             })}
           </div>
+
           {/* Storage */}
           {(sop as any).storage_info?.length > 0 && (
-            <div className="px-4 pb-3">
-              <div className="card p-4">
-                <p className="text-xs text-gray-400 font-medium mb-2">
+            <div className="px-4 pb-4">
+              <div className="card p-5">
+                <p className="text-base text-gray-400 font-bold mb-3">
                   {lang === 'hi' ? '🧊 स्टोरेज' : '🧊 Storage'}
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {((sop as any).storage_info as any[]).map((s: any, i: number) => (
-                    <div key={i} className="flex items-start justify-between text-sm gap-2">
+                    <div key={i} className="flex items-start justify-between gap-3">
                       <div className="flex-1">
-                        <p className="text-gray-700">{lang === 'hi' ? s.item : s.item_en}</p>
-                        <p className="text-xs text-gray-400">{lang === 'hi' ? s.condition : s.condition_en}</p>
+                        <p className="text-lg text-gray-800 font-medium">{lang === 'hi' ? s.item : s.item_en}</p>
+                        <p className="text-base text-gray-400">{lang === 'hi' ? s.condition : s.condition_en}</p>
                       </div>
-                      <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full flex-shrink-0">{s.duration}</span>
+                      <span className="text-base bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold flex-shrink-0">{s.duration}</span>
                     </div>
                   ))}
                 </div>
@@ -457,14 +454,14 @@ export default function KioskSopViewer() {
 
           {/* Chef tips */}
           {(sop as any).chef_tips?.length > 0 && (
-            <div className="px-4 pb-3">
-              <div className="card p-4">
-                <p className="text-xs text-gray-400 font-medium mb-2">
+            <div className="px-4 pb-4">
+              <div className="card p-5">
+                <p className="text-base text-gray-400 font-bold mb-3">
                   {lang === 'hi' ? '👨‍🍳 शेफ टिप्स' : '👨‍🍳 Chef Tips'}
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {((sop as any).chef_tips as any[]).map((c: any, i: number) => (
-                    <p key={i} className="text-sm text-gray-700">
+                    <p key={i} className="text-lg text-gray-800">
                       ⚠ {lang === 'hi' ? c.tip : c.tip_en}
                     </p>
                   ))}
@@ -473,24 +470,24 @@ export default function KioskSopViewer() {
             </div>
           )}
 
-          {/* Active timers floating summary */}
+          {/* Active timers floating bar */}
           {activeTimerCount > 0 && (
-            <div className="sticky bottom-0 bg-white border-t border-warm-200 p-3">
-              <div className="flex gap-2 overflow-x-auto">
+            <div className="sticky bottom-0 bg-white border-t border-warm-200 p-4">
+              <div className="flex gap-3 overflow-x-auto">
                 {Object.entries(timers).filter(([, t]) => t.running).map(([idxStr, timer]) => {
                   const idx = parseInt(idxStr)
                   const step = steps[idx]
                   const isOver = timer.elapsed > timer.duration
-                  const remaining = timer.duration - timer.elapsed
+                  const rem = timer.duration - timer.elapsed
                   return (
                     <div key={idx}
-                      className={`flex-shrink-0 rounded-xl px-3 py-2 ${isOver ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
-                      onClick={() => { setExpandedStep(idx); window.scrollTo({ top: idx * 200, behavior: 'smooth' }) }}>
-                      <p className="text-xs font-medium truncate max-w-[120px]">
+                      className={`flex-shrink-0 rounded-2xl px-5 py-3 ${isOver ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
+                      onClick={() => { setExpandedStep(idx); window.scrollTo({ top: idx * 250, behavior: 'smooth' }) }}>
+                      <p className="text-sm font-bold truncate max-w-[150px]">
                         {lang === 'hi' ? step?.label : step?.label_en}
                       </p>
-                      <p className="text-lg font-mono font-bold">
-                        {isOver ? '+' : ''}{formatTimer(isOver ? timer.elapsed - timer.duration : remaining)}
+                      <p className="text-2xl font-mono font-bold">
+                        {isOver ? '+' : ''}{formatTimer(isOver ? timer.elapsed - timer.duration : rem)}
                       </p>
                     </div>
                   )
