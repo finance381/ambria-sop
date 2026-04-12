@@ -244,19 +244,50 @@ export default function KioskSopViewer() {
       {/* Timer Tab */}
       {tab === 'timer' && hasTimer && (
         <div className="flex-1 overflow-y-auto">
-          {/* Service time header */}
-          {serviceTime && (
-            <div className="text-center py-4 bg-warm-50 border-b border-warm-200">
-              <p className="text-xs text-gray-400">{lang === 'hi' ? 'सर्विस टाइम' : 'Service Time'}</p>
-              <p className="text-2xl font-bold text-gray-900">{serviceTime.slice(0, 5)}</p>
-              <p className="text-xs text-gray-400 mt-0.5">
-                {now.toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
-              </p>
+          {/* Header: Service time + Yield */}
+          <div className="text-center py-4 bg-warm-50 border-b border-warm-200">
+            {serviceTime && (
+              <>
+                <p className="text-xs text-gray-400">{lang === 'hi' ? 'सर्विस टाइम' : 'Service Time'}</p>
+                <p className="text-2xl font-bold text-gray-900">{serviceTime.slice(0, 5)}</p>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  {now.toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
+                </p>
+              </>
+            )}
+            {(sop as any).yield_info && (
+              <p className="text-sm text-kiosk font-medium mt-2">🍽 {(sop as any).yield_info}</p>
+            )}
+          </div>
+
+          {/* Pre-prep */}
+          {(sop as any).pre_prep?.length > 0 && (
+            <div className="px-4 pt-4 pb-1">
+              <div className="card p-4">
+                <p className="text-xs text-gray-400 font-medium mb-2">
+                  {lang === 'hi' ? '📋 प्री-प्रेपरेशन' : '📋 Pre-preparation'}
+                </p>
+                <div className="space-y-2">
+                  {((sop as any).pre_prep as any[]).map((p: any, i: number) => (
+                    <div key={i} className="flex items-center justify-between text-sm">
+                      <span className="text-gray-700">{lang === 'hi' ? p.task : p.task_en}</span>
+                      <span className="text-xs bg-warm-100 text-gray-500 px-2 py-0.5 rounded-full flex-shrink-0 ml-2">{p.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
+          {/* Steps heading */}
+          <div className="px-4 pt-3 pb-1">
+            <p className="text-xs text-gray-400 font-medium">
+              {lang === 'hi' ? '⏱ प्रक्रिया स्टेप्स' : '⏱ Procedure Steps'}
+            </p>
+          </div>
+
           {/* Steps */}
-          <div className="p-4 space-y-3">
+          <div className="p-4 pt-2 space-y-3">
             {steps.map((step, idx) => {
               const status = getStepStatus(step)
               const timer = timers[idx]
@@ -402,26 +433,7 @@ export default function KioskSopViewer() {
               )
             })}
           </div>
-          {/* Pre-prep section */}
-          {(sop as any).pre_prep?.length > 0 && (
-            <div className="px-4 pb-3">
-              <div className="card p-4">
-                <p className="text-xs text-gray-400 font-medium mb-2">
-                  {lang === 'hi' ? '📋 प्री-प्रेपरेशन' : '📋 Pre-preparation'}
-                </p>
-                <div className="space-y-2">
-                  {((sop as any).pre_prep as any[]).map((p: any, i: number) => (
-                    <div key={i} className="flex items-center justify-between text-sm">
-                      <span className="text-gray-700">{lang === 'hi' ? p.task : p.task_en}</span>
-                      <span className="text-xs bg-warm-100 text-gray-500 px-2 py-0.5 rounded-full flex-shrink-0 ml-2">{p.time}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Storage info */}
+          {/* Storage */}
           {(sop as any).storage_info?.length > 0 && (
             <div className="px-4 pb-3">
               <div className="card p-4">
@@ -457,15 +469,6 @@ export default function KioskSopViewer() {
                     </p>
                   ))}
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Yield info */}
-          {(sop as any).yield_info && (
-            <div className="px-4 pb-3">
-              <div className="bg-kiosk-light rounded-xl p-3 text-center">
-                <p className="text-sm text-kiosk font-medium">🍽 {(sop as any).yield_info}</p>
               </div>
             </div>
           )}
