@@ -135,12 +135,12 @@ export default function StaffManager() {
                 : member.role === 'head_chef' ? 'bg-amber-500'
                 : member.role === 'section_head' ? 'bg-blue-500'
                 : 'bg-gray-400'}`}>
-              {(member.name_hi || member.name).charAt(0)}
+              {(lang === 'hi' ? (member.name_hi || member.name) : member.name).charAt(0)}
             </div>
 
             <div className="flex-1 min-w-0" onClick={() => startEdit(member)}>
               <div className="flex items-center gap-2">
-                <p className="font-semibold text-gray-900 truncate">{member.name_hi || member.name}</p>
+                <p className="font-semibold text-gray-900 truncate">{lang === 'hi' ? (member.name_hi || member.name) : member.name}</p>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${roleBadge[member.role] || ''}`}>
                   {roleLabels[member.role]?.[lang] || member.role}
                 </span>
