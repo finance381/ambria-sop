@@ -21,6 +21,16 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/v1\/object\/public\/sop-pdfs\/.*/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'sop-pdfs',
+              expiration: { maxAgeSeconds: 24 * 60 * 60 },
+            },
+          },
+        ],
       },
     }),
   ],
