@@ -71,13 +71,20 @@ export default function KioskSopList() {
         .single()
       setTitle(cat ? localized(cat.name_hi, cat.name) : '')
 
-      const { data } = await supabase
+      let query = supabase
         .from('sops')
         .select('*')
-        .eq('department_id', station.department_id)
         .eq('category_id', categoryId)
         .eq('is_active', true)
         .order('title')
+
+      // Non-admin: filter by department
+      const staffRole = useStore.getState().staff?.role
+      if (staffRole !== 'admin' && staffRole !== 'head_chef') {
+        query = query.eq('department_id', station.department_id)
+      }
+
+      const { data } = await query
       setSops(data || [])
     }
     setLoading(false)
